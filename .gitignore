@@ -1,0 +1,18 @@
+# Environment secrets — never commit
+server/.env
+client/.env
+*.env
+!*.env.example
+.env.docker
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Playwright
+test-results/
+playwright-report/
+e2e/.auth/

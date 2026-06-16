@@ -1,0 +1,28 @@
+node_modules
+**/node_modules
+**/.git
+.gitignore
+
+# Environment files — never bake secrets into the image
+**/.env
+server/.env
+client/.env
+
+# Build outputs (rebuilt inside Docker)
+dist
+**/dist
+build
+
+# Test artefacts
+test-results
+playwright-report
+e2e/.auth
+**/__tests__
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+
+# Editor / OS noise
+.DS_Store
+*.log

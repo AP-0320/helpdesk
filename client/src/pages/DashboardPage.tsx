@@ -22,7 +22,7 @@ function formatDuration(ms: number): string {
   return `${Math.round(hours / 24)}d`
 }
 
-function StatCard({ label, icon: Icon, value }: { label: string; icon: React.ElementType; value: string | number | undefined }) {
+function StatCard({ label, icon: Icon, value }: Readonly<{ label: string; icon: React.ElementType; value: string | number | undefined }>) {
   return (
     <Card>
       <CardHeader className="pb-2">
@@ -68,7 +68,7 @@ export default function DashboardPage() {
     {
       label: 'Avg Resolution Time',
       icon: Clock,
-      value: stats?.avgResolutionTimeMs != null ? formatDuration(stats.avgResolutionTimeMs) : '—',
+      value: stats?.avgResolutionTimeMs == null ? '—' : formatDuration(stats.avgResolutionTimeMs),
     },
   ]
 
@@ -80,7 +80,7 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
         {isLoading
-          ? Array.from({ length: 5 }).map((_, i) => <SkeletonCard key={i} />)
+          ? ['total', 'open', 'ai', 'rate', 'avg'].map((id) => <SkeletonCard key={id} />)
           : cards.map((card) => <StatCard key={card.label} {...card} />)}
       </div>
 
@@ -120,9 +120,11 @@ export default function DashboardPage() {
                     fontSize: '12px',
                     color: 'var(--color-popover-foreground)',
                   }}
-                  formatter={(value: number) => [value, 'Tickets']}
-                  labelFormatter={(label: string) => {
-                    const d = new Date(label + 'T00:00:00')
+                  labelStyle={{ color: 'var(--color-popover-foreground)' }}
+                  itemStyle={{ color: 'var(--color-popover-foreground)' }}
+                  formatter={(value) => [value ?? 0, 'Tickets']}
+                  labelFormatter={(label) => {
+                    const d = new Date(String(label) + 'T00:00:00')
                     return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
                   }}
                 />

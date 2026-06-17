@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
-import { createUserSchema, updateUserSchema, type CreateUserData } from "@helpdesk/core"
+import { createUserSchema, updateUserSchema, type CreateUserData, Role } from "@helpdesk/core"
 import {
   Sheet,
   SheetContent,
@@ -24,6 +24,7 @@ interface UserDialogProps {
 
 export default function UserDialog({ open, onOpenChange, user }: UserDialogProps) {
   const isEdit = user !== null
+  const isAdmin = isEdit && user.role === Role.ADMIN
   const queryClient = useQueryClient()
 
   const {
@@ -107,8 +108,12 @@ export default function UserDialog({ open, onOpenChange, user }: UserDialogProps
               placeholder="jane@example.com"
               aria-invalid={!!errors.email}
               onFocus={moveCursorToEnd}
+              disabled={isAdmin}
               {...register("email")}
             />
+            {isAdmin && (
+              <p className="text-xs text-muted-foreground">Admin email cannot be changed.</p>
+            )}
             {errors.email && (
               <p className="text-xs text-destructive">{errors.email.message}</p>
             )}
@@ -124,8 +129,12 @@ export default function UserDialog({ open, onOpenChange, user }: UserDialogProps
               placeholder={isEdit ? "Leave blank to keep current" : "••••••••"}
               aria-invalid={!!errors.password}
               onFocus={moveCursorToEnd}
+              disabled={isAdmin}
               {...register("password")}
             />
+            {isAdmin && (
+              <p className="text-xs text-muted-foreground">Admin password cannot be changed.</p>
+            )}
             {errors.password && (
               <p className="text-xs text-destructive">{errors.password.message}</p>
             )}

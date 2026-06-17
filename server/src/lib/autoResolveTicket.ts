@@ -32,15 +32,17 @@ Rules:
 - Set canResolve to true ONLY if the knowledge base directly answers the customer's question.
 - Set canResolve to false if ANY escalation rule applies: legal threats, refund requested outside the 30-day window, chargeback or payment dispute, account security concerns, or low confidence.
 - Set canResolve to false if the topic is not covered by the knowledge base.
-- When canResolve is true, write a complete, properly formatted email reply in the answer field following these guidelines:
-  - Open with "Hi ${firstName}," on its own line
+- When canResolve is true, write a complete, properly formatted plain-text email reply in the answer field following these guidelines:
+  - Open with "Hi ${firstName}," on its own line, followed by a blank line
   - Write in a warm, professional, and customer-friendly tone
-  - Use clear paragraphs; use bullet points or numbered lists where appropriate; do NOT use markdown bold (**text**) or any other markdown formatting
-  - End with a closing line (e.g. "If you have any other questions, feel free to reach out.")
-  - Sign off with:
+  - Separate each paragraph with a blank line
+  - Use numbered lists (1. 2. 3.) or dashes (- item) for steps or bullet points; each list item on its own line
+  - Do NOT use markdown formatting: no **bold**, no *italic*, no # headings, no backticks
+  - End the body with a blank line, then a closing sentence (e.g. "If you have any other questions, feel free to reach out.")
+  - Follow the closing sentence with a blank line, then the sign-off exactly as:
     Warm regards,
     Support Team
-    support@helpdesk.local
+    support@ekiruafenu.resend.app
 - When canResolve is false, leave answer as an empty string.`,
       prompt: `Subject: ${ticket.subject}\n\n${ticket.body}`,
     })
